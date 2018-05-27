@@ -45,6 +45,7 @@ TRAIN_DATA = [
 ]
 '''
 
+
 TRAIN_DATA = [('A cena do hip hop holandês é dividida pelas cidades maiores da Holanda.', {'entities': [(18, 26, 'NORP')]}),
 ('do 1998', {'entities': [(3, 7, 'DATE')]}),
 ('Em 18 de outubro de 2012, a equipe anunciou que', {'entities': [(3, 24, 'DATE')]}),
@@ -58,18 +59,24 @@ TRAIN_DATA = [('A cena do hip hop holandês é dividida pelas cidades maiores da
 ]
 
 
+
+@timing
+def operation_timing_II(optimizer,nlp,TRAIN_DATA):
+    for text, annotations in TRAIN_DATA:
+        nlp.update(
+            [text],  # batch of texts
+            [annotations],  # batch of annotations
+            drop=0.5,  # dropout - make it harder to memorise data
+            sgd=optimizer,  # callable to update weights
+            losses=losses)
+    return losses
+
 @timing
 def operation_timing(optimizer,nlp,n_iter,TRAIN_DATA):
     for itn in range(n_iter):
         random.shuffle(TRAIN_DATA)
         losses = {}
-        for text, annotations in TRAIN_DATA:
-            nlp.update(
-                [text],  # batch of texts
-                [annotations],  # batch of annotations
-                drop=0.5,  # dropout - make it harder to memorise data
-                sgd=optimizer,  # callable to update weights
-                losses=losses)
+        losses = operation_timing_II(optimizer,nlp,TRAIN_DATA)
         print(losses)
 
 

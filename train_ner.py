@@ -59,7 +59,7 @@ TRAIN_DATA = [('A cena do hip hop holandês é dividida pelas cidades maiores da
 
 
 @timing
-def operation_timing(n_iter,TRAIN_DATA):
+def operation_timing(optimizer,nlp,n_iter,TRAIN_DATA):
     for itn in range(n_iter):
         random.shuffle(TRAIN_DATA)
         losses = {}
@@ -107,7 +107,7 @@ def main(model='pt_core_news_sm', output_dir=outpath, n_iter=100):
         optimizer = nlp.begin_training()
 
         # to get timing
-        operation_timing(n_iter,TRAIN_DATA)
+        operation_timing(nlp,n_iter,TRAIN_DATA)
 
     # test the trained model
     for text, _ in TRAIN_DATA:

@@ -61,7 +61,7 @@ TRAIN_DATA = [('A cena do hip hop holandês é dividida pelas cidades maiores da
 
 
 @timing
-def operation_timing_II(optimizer,nlp,TRAIN_DATA):
+def operation_timing_II(losses,optimizer,nlp,TRAIN_DATA):
     for text, annotations in TRAIN_DATA:
         nlp.update(
             [text],  # batch of texts
@@ -76,7 +76,7 @@ def operation_timing(optimizer,nlp,n_iter,TRAIN_DATA):
     for itn in range(n_iter):
         random.shuffle(TRAIN_DATA)
         losses = {}
-        losses = operation_timing_II(optimizer,nlp,TRAIN_DATA)
+        losses = operation_timing_II(losses,optimizer,nlp,TRAIN_DATA)
         print(losses)
 
 

@@ -25,7 +25,7 @@ dirpath = "/home/contato/train-nlp"
 outpath = "/home/contato/train-nlp/model"
 
 # training data
-TRAIN_DATA = list()
+#TRAIN_DATA = list()
 path2 = "/home/contato/train-nlp/selected_v1.txt"
 #with open(dirpath+"wiki_07_d_entities_PERSON_6_NORP_2_FAC_0_ORG_0_GPE_8_LOC_0_PRODUCT_0_EVENT_0_WORK_OF_ART_0_LAW_0_LANGUAGE_0_DATE_1_TIME_0_PERCENT_1_MONEY_0_QUANTITY_0_ORDINAL_1_CARDINAL_4.txt") as f:
 
@@ -44,7 +44,7 @@ TRAIN_DATA = [
     })
 ]
 '''
-'''
+
 TRAIN_DATA = [('A cena do hip hop holandês é dividida pelas cidades maiores da Holanda.', {'entities': [(18, 26, 'NORP')]}),
 ('do 1998', {'entities': [(3, 7, 'DATE')]}),
 ('Em 18 de outubro de 2012, a equipe anunciou que', {'entities': [(3, 24, 'DATE')]}),
@@ -56,7 +56,22 @@ TRAIN_DATA = [('A cena do hip hop holandês é dividida pelas cidades maiores da
 ('A tripulação da Apollo 10 também são os humanos', {'entities': [(23, 25, 'CARDINAL')]}),
 ('o primeiro', {'entities': [(2, 10, 'ORDINAL')]}),
 ]
-'''
+
+
+@timing
+def operation_timing(n_iter,TRAIN_DATA):
+    for itn in range(n_iter):
+        random.shuffle(TRAIN_DATA)
+        losses = {}
+        for text, annotations in TRAIN_DATA:
+            nlp.update(
+                [text],  # batch of texts
+                [annotations],  # batch of annotations
+                drop=0.5,  # dropout - make it harder to memorise data
+                sgd=optimizer,  # callable to update weights
+                losses=losses)
+        print(losses)
+
 
 @timing
 @plac.annotations(
@@ -90,17 +105,9 @@ def main(model='pt_core_news_sm', output_dir=outpath, n_iter=100):
     other_pipes = [pipe for pipe in nlp.pipe_names if pipe != 'ner']
     with nlp.disable_pipes(*other_pipes):  # only train NER
         optimizer = nlp.begin_training()
-        for itn in range(n_iter):
-            random.shuffle(TRAIN_DATA)
-            losses = {}
-            for text, annotations in TRAIN_DATA:
-                nlp.update(
-                    [text],  # batch of texts
-                    [annotations],  # batch of annotations
-                    drop=0.5,  # dropout - make it harder to memorise data
-                    sgd=optimizer,  # callable to update weights
-                    losses=losses)
-            print(losses)
+
+        # to get timing
+        operation_timing(n_iter,TRAIN_DATA)
 
     # test the trained model
     for text, _ in TRAIN_DATA:

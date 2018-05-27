@@ -29,10 +29,10 @@ outpath = "/home/contato/train-nlp/model"
 path2 = "/home/contato/train-nlp/selected_v1.txt"
 #with open(dirpath+"wiki_07_d_entities_PERSON_6_NORP_2_FAC_0_ORG_0_GPE_8_LOC_0_PRODUCT_0_EVENT_0_WORK_OF_ART_0_LAW_0_LANGUAGE_0_DATE_1_TIME_0_PERCENT_1_MONEY_0_QUANTITY_0_ORDINAL_1_CARDINAL_4.txt") as f:
 
-with open(path2) as f:
-    for line in f:
+#with open(path2) as f:
+#    for line in f:
         #a = json.loads('{"url": "https://en.wikipedia.org/wiki?curid=12", "text": "Anarchism is a political philosophy that advocates self-governed societies based on voluntary institutions."}')
-        TRAIN_DATA.append(eval(line.strip('\n')))  
+#        TRAIN_DATA.append(eval(line.strip('\n')))  
 
 '''
 TRAIN_DATA = [

@@ -21,12 +21,12 @@ import pt_core_news_sm
 from aux_timer import *
 
 
-dirpath = "/home/edivaldo/Documentos/legaut/Pesquisa/Algoritmos/wikipedia/en/extracted/AA/"
-outpath = "/home/edivaldo/Documentos/legaut/Pesquisa/Algoritmos/models/model_wiki_en_AA_25_05_2018/"
+dirpath = "/home/contato/train-nlp"
+outpath = "/home/contato/train-nlp/model"
 
 # training data
 TRAIN_DATA = list()
-path2 = "/home/edivaldo/Documentos/legaut/Pesquisa/Algoritmos/wikipedia/en/extracted/AA/selected_v1.txt"
+path2 = "/home/contato/train-nlp/selected_v1.txt"
 #with open(dirpath+"wiki_07_d_entities_PERSON_6_NORP_2_FAC_0_ORG_0_GPE_8_LOC_0_PRODUCT_0_EVENT_0_WORK_OF_ART_0_LAW_0_LANGUAGE_0_DATE_1_TIME_0_PERCENT_1_MONEY_0_QUANTITY_0_ORDINAL_1_CARDINAL_4.txt") as f:
 
 with open(path2) as f:

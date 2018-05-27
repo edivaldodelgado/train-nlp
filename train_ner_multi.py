@@ -20,13 +20,17 @@ import pt_core_news_sm
 # Import aux functions
 from aux_timer import *
 
-# Dados Locais
-dirpath = "/home/edivaldo/Documentos/legaut/Pesquisa/Algoritmos/wikipedia/en/extracted/AA/"
-outpath = "/home/edivaldo/Documentos/legaut/Pesquisa/Algoritmos/models/model_wiki_en_AA_25_05_2018/"
+# MultiProcessing
+
+import multiprocessing
+
+# Rodar Localmente
+#dirpath = "/home/edivaldo/Documentos/legaut/Pesquisa/Algoritmos/wikipedia/en/extracted/AA/"
+#outpath = "/home/edivaldo/Documentos/legaut/Pesquisa/Algoritmos/models/model_wiki_en_AA_25_05_2018/"
 
 
-#dirpath = "/home/contato/train-nlp"
-#outpath = "/home/contato/train-nlp/model"
+dirpath = "/home/contato/train-nlp"
+outpath = "/home/contato/train-nlp/model"
 
 # training data
 #TRAIN_DATA = list()
@@ -77,11 +81,35 @@ def operation_timing_II(losses,optimizer,nlp,TRAIN_DATA):
 
 @timing
 def operation_timing(optimizer,nlp,n_iter,TRAIN_DATA):
+
+    tasks = []
+
     for itn in range(n_iter):
         random.shuffle(TRAIN_DATA)
         losses = {}
-        losses = operation_timing_II(losses,optimizer,nlp,TRAIN_DATA)
-        print(losses)
+        tasks.append( (losses,optimizer,nlp,TRAIN_DATA,) )
+
+        
+    # Testing Paralellism         
+    # Start my pool
+    #print("\nTarefas: ")
+    #print(tasks)
+    num_processors = multiprocessing.cpu_count()
+    pool = multiprocessing.Pool(num_processors)
+
+    print("\nTesting Parallelism using %d processors..." % \
+            (num_processors) )
+    
+    # Run tasks
+    losses = [pool.apply_async( operation_timing_II, t ) for t in tasks]
+
+    # Process results
+    #for loss in losses:
+    #    print("Loss: "+str(loss))
+
+    pool.close()
+    pool.join()
+
 
 
 @timing
